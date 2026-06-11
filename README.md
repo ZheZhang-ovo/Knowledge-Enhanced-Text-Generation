@@ -1,69 +1,64 @@
-<img src="./files/kid.jpeg" width="150" class="center"><img src="./files/font.png" width="500" class="left">
+# Knowledge-Enhanced Text Generation
 
-This is the repo for the paper [KID-REVIEW: Knowledge-GuIdeD Scientific Review Generation with Oracle Pre-training](https://ojs.aaai.org/index.php/AAAI/article/view/21418)
+This repository contains my project on knowledge-enhanced text generation.
+It explores graph-enhanced BART models for generating text with citation and
+concept knowledge.
 
-# Requirements
-Requirements for all the libraries are in the **requirements.txt**, please use the right version for each library in order to reproduce our results.
+## Features
 
-# Dataset
-Run the command below to download and prepare our dataset, or use [this link](https://drive.google.com/file/d/1DhL8WJouWnnoN0XkTP7t_P_dDQUFNxko/view?usp=sharing) to download directly and uncompress the `data.zip` into a `data` folder.
-```
-sh prepare_data.sh
-```
+- BART-based text generation
+- Citation graph integration
+- Concept graph integration
+- Oracle-based training and evaluation
 
+## Project Structure
 
+- `new_finetune.py`: trains the knowledge-enhanced generation model
+- `new_generate.py`: generates predictions from a trained model
+- `new_graphbart.py`: implements the graph-enhanced BART model
+- `args.py`: defines command-line configuration
+- `utils/`: contains data, model, and generation utilities
 
+## Data and Models
 
-# Finetune
-To finetune the baseline model using oracle extraction, use the following command. The default save directory is *trained_models*, the default save model name is *bart.pthbest*
-```python
-python new_finetune.py --source oracle --gpu 2
-```
-To finetune the citation graph model, use the following command. The default save directory is *trained_models*, the default save model name is *bart_cite.pthbest* 
-```python
-python new_finetune.py --source oracle --gpu 2 --citation_graph --prepend
-```
-To finetune the concept graph model, use the following command. The default save directory is *trained_models*, the default save model name is *bart_concept.pthbest*
-```python
-python new_finetune.py --source oracle --gpu 2 --concept_graph
-```
-To finetune the model using both citation graph and concept graph, we first reload the model trained by using pure concept graph, and then finetune. Please use the following command. The default save directory is *trained_models*, the default save model name is *bart_cite_concept.pthbest*
-```
-python new_finetune.py --source oracle --citation_graph --prepend --concept_graph --reload_from_saved trained_models/bart_concept.pthbest
-```
-All arguments are in **args.py** file, please check it for more settings.
+Datasets, cached files, generated outputs, and model checkpoints are excluded
+from this repository because some of them exceed GitHub's file-size limits.
+Place downloaded data in `data/` and trained checkpoints in `trained_models/`.
 
-# Generate
-Using vanilla model to generate text. The default output directory is *output*, the default predictions are in the created *pred.txt*.
-```python
-python new_generate.py --source oracle --gpu 1 --model_name bart.pthbest
-```
-Using citataion graph to generate text.
-```python
-python new_generate.py --prepend --source oracle --gpu 1 --citation_graph --model_name bart_cite.pthbest
-```
-Using concept graph to generate text.
-```python
-python new_generate.py --source oracle --gpu 1 --concept_graph --model_name bart_concept.pthbest
-```
-Using both concept graph and citation graph to generate text.
-```python
-python new_generate.py --prepend --source oracle --gpu 1 --citation_graph --concept_graph --model_name bart_cite_concept.pthbest
+## Training
+
+Train the baseline model:
+
+```bash
+python new_finetune.py --source oracle --gpu 0
 ```
 
+Train with a citation graph:
 
-# Bib
+```bash
+python new_finetune.py --source oracle --gpu 0 --citation_graph --prepend
 ```
-@article{Yuan_Liu_2022, 
-    title={KID-Review: Knowledge-Guided Scientific Review Generation with Oracle Pre-training}, 
-    volume={36}, 
-    url={https://ojs.aaai.org/index.php/AAAI/article/view/21418}, DOI={10.1609/aaai.v36i10.21418}, 
-    abstractNote={The surge in the number of scientific submissions has brought challenges to the work of peer review. In this paper, as a first step, we explore the possibility of designing an automated system, which is not meant to replace humans, but rather providing a first-pass draft for a machine-assisted human review process. Specifically, we present an end-to-end knowledge-guided review generation framework for scientific papers grounded in cognitive psychology research that a better understanding of text requires different types of knowledge. In practice, we found that this seemingly intuitive idea suffered from training difficulties. In order to solve this problem, we put forward an oracle pre-training strategy, which can not only make the Kid-Review better educated but also make the generated review cover more aspects. Experimentally, we perform a comprehensive evaluation (human and automatic) from different perspectives. Empirical results have shown the effectiveness of different types of knowledge as well as oracle pre-training. We make all code, relevant dataset available: https://github.com/Anonymous4nlp233/KIDReview as well as the Kid-Review system: http://nlpeer.reviews.}, 
-    number={10}, 
-    journal={Proceedings of the AAAI Conference on Artificial Intelligence}, 
-    author={Yuan, Weizhe and Liu, Pengfei}, 
-    year={2022}, 
-    month={Jun.}, 
-    pages={11639-11647} 
-}
+
+Train with a concept graph:
+
+```bash
+python new_finetune.py --source oracle --gpu 0 --concept_graph
 ```
+
+Train with both citation and concept graphs:
+
+```bash
+python new_finetune.py --source oracle --gpu 0 --citation_graph --prepend --concept_graph
+```
+
+## Generation
+
+```bash
+python new_generate.py --source oracle --gpu 0 --model_name bart.pthbest
+```
+
+The generated predictions are written to the configured output directory.
+
+## Author
+
+Zhe Zhang
