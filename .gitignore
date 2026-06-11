@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+__MACOSX/
+._*
+
+# Large generated artifacts
+trained_models/
+cache/
+output/
+*.pth
+*.pthbest
+*.pt
+*.ckpt
+*.pkl
+
+# Downloaded datasets
+data/
+
+# Local archives
+*.zip
+*.rar
+*.7z
